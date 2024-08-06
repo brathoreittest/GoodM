@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     if (!usingProfileVideos) {
       // Fetch the video IDs from videos1.txt
-      fetch('https://raw.githubusercontent.com/brathoreittest/test/main/videos1.txt')
+      fetch('https://raw.githubusercontent.com/brathoreittest/GoodM/main/src/videos1.txt')
         .then(response => response.text())
         .then(text => {
           const ids = text.split('\n').filter(id => id.trim() !== '');
@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     // Fetch profile videos based on profileIndex
     if (usingProfileVideos) {
-      fetch(`https://raw.githubusercontent.com/brathoreittest/test/main/videos${profileIndex}.txt`)
+      fetch(`https://raw.githubusercontent.com/brathoreittest/GoodM/main/src/videos${profileIndex}.txt`)
         .then(response => response.text())
         .then(text => {
           const ids = text.split('\n').filter(id => id.trim() !== '');
