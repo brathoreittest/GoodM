@@ -55,24 +55,20 @@ function App() {
       setPlaying(true); // Autoplay the previous video
     }
   };
-
-  const handleNext = () => {
+  const handleNextVideo = () => {
     if (usingProfileVideos && profileVideoIds.length > 0) {
-      // Continue with the current profile video list
-      const randomIndex = Math.floor(Math.random() * profileVideoIds.length);
-      const randomVideoUrl = `https://www.youtube.com/watch?v=${profileVideoIds[randomIndex]}`;
-      setCurrentVideoUrl(randomVideoUrl);
-      setPlaying(true); // Autoplay the next video from the profile list
+        const randomIndex = Math.floor(Math.random() * profileVideoIds.length);
+        const randomVideoUrl = `https://www.youtube.com/watch?v=${profileVideoIds[randomIndex]}`;
+        setCurrentVideoUrl(randomVideoUrl);
+        setPlaying(true);
     } else if (!usingProfileVideos && videoIds.length > 0) {
-      // Switch to profile videos
-      setUsingProfileVideos(true);
-      const randomIndex = Math.floor(Math.random() * videoIds.length);
-      const randomVideoUrl = `https://www.youtube.com/watch?v=${videoIds[randomIndex]}`;
-      setCurrentVideoUrl(randomVideoUrl);
-      setCurrentVideoIndex(randomIndex); // Set new index for main video list
-      setPlaying(true); // Autoplay the next video from main list
+        const nextIndex = (currentVideoIndex + 1) % videoIds.length;
+        const nextVideoUrl = `https://www.youtube.com/watch?v=${videoIds[nextIndex]}`;
+        setCurrentVideoUrl(nextVideoUrl);
+        setCurrentVideoIndex(nextIndex);
+        setPlaying(true);
     }
-  };
+};
 
   const handleProfile = () => {
     if (profileVideoIds.length > 0) {
@@ -91,7 +87,10 @@ function App() {
       setUsingProfileVideos(true);
     }
   };
-
+  const handleVideoError = () => {
+    console.warn('Error playing video. Skipping to next.');
+    handleNextVideo();
+};
   const handleReady = () => {
     const duration = playerRef.current.getDuration();
     if (duration) {
@@ -109,11 +108,12 @@ function App() {
             url={currentVideoUrl}
             playing={playing}
             onReady={handleReady}
+            onError={handleVideoError}
             width="100%"
             height="100%"
           />
           {/*<button className="previous-button" onClick={handlePrevious}>Previous</button>*/}
-          <button className="next-button" onClick={handleNext}>Next</button>
+          <button className="next-button" onClick={handleNextVideo}>Next</button>
           <button className="profile-button" onClick={handleProfile}>Profile</button>
         </div>
       )}
